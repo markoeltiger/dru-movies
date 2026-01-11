@@ -10,17 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mark.dru_movies.R
 import com.mark.dru_movies.domain.model.Movie
 import com.mark.dru_movies.data.utils.Constants
+import com.mark.dru_movies.presentation.ui.theme.starYellow
 
 @Composable
 fun MovieItem(movie: Movie, onClick: () -> Unit) {
@@ -49,6 +53,8 @@ fun MovieItem(movie: Movie, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(painter = painterResource(R.drawable.ic_rate_star_filled), contentDescription = "Stars", tint = starYellow)
+
                     Text(
                         text = "${String.format("%.1f", movie.voteAverage)}",
                         style = MaterialTheme.typography.bodySmall
