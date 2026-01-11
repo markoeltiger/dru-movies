@@ -1,5 +1,6 @@
 package com.mark.dru_movies.presentation.home
 
+import android.widget.GridView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -55,12 +59,15 @@ fun HomeScreen(
                 }
             }
             is HomeUiState.Success -> {
-                LazyRow(
+                LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
                     contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    columns = GridCells.Fixed(2),
+
+                    userScrollEnabled = true
                 ) {
                     items(state.movies) { movie ->
                         MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })

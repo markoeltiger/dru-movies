@@ -1,6 +1,5 @@
-package com.mark.dru_movies.ui.theme
+package com.mark.dru_movies.presentation.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -50,7 +50,7 @@ fun MovieItem(movie: Movie, onClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "⭐ ${String.format("%.1f", movie.voteAverage)}",
+                        text = "${String.format("%.1f", movie.voteAverage)}",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

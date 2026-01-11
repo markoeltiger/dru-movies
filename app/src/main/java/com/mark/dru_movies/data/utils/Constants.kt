@@ -1,4 +1,4 @@
-package com.mark.dru_movies.utils
+package com.mark.dru_movies.data.utils
 
 import com.mark.dru_movies.BuildConfig
 
