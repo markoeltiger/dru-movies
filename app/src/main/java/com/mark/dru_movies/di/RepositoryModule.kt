@@ -1,5 +1,6 @@
 package com.mark.dru_movies.di
 
+import com.mark.dru_movies.data.local.dao.CacheMetadataDao
 import com.mark.dru_movies.data.local.dao.MovieDao
 import com.mark.dru_movies.data.remote.remote.api.TMDbApi
 import com.mark.dru_movies.data.repo.MovieRepositoryImpl
@@ -19,7 +20,8 @@ object RepositoryModule {
     fun provideMovieRepository(
         api: TMDbApi,
         movieDao: MovieDao,
+        cacheMetadataDao: CacheMetadataDao
     ): MovieRepository {
-        return MovieRepositoryImpl(api, movieDao)
+        return MovieRepositoryImpl(api, movieDao,cacheMetadataDao)
     }
 }

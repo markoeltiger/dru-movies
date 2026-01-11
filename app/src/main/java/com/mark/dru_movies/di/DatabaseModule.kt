@@ -2,6 +2,7 @@ package com.mark.dru_movies.di
 
 import android.content.Context
 import androidx.room.Room
+import com.mark.dru_movies.data.local.dao.CacheMetadataDao
 import com.mark.dru_movies.data.local.dao.MovieDao
 import com.mark.dru_movies.data.local.database.MovieDatabase
 import dagger.Module
@@ -22,12 +23,16 @@ object DatabaseModule {
             context,
             MovieDatabase::class.java,
             "movie_database"
-        ).build()
+        )   .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     fun provideMovieDao(database: MovieDatabase): MovieDao {
         return database.movieDao()
     }
-
+    @Provides
+    fun provideCachedMetaDataDao(database: MovieDatabase): CacheMetadataDao {
+        return database.cacheMetadataDao()
+    }
 }
