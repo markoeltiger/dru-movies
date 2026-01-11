@@ -24,6 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,6 +44,7 @@ fun HomeScreen(
     onMovieClick: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val pullToRefreshState = rememberPullToRefreshState()
 
     Scaffold(
         topBar = {
@@ -63,18 +66,25 @@ fun HomeScreen(
                 }
             }
             is HomeUiState.Success -> {
-                LazyVerticalGrid(
+                PullToRefreshBox(
+                    isRefreshing = false,
+                    onRefresh = { viewModel.loadMovies() },
+                    state = pullToRefreshState,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    columns = GridCells.Fixed(2),
-
-                    userScrollEnabled = true
+                        .padding(padding)
                 ) {
-                    items(state.movies) { movie ->
-                        MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+                    LazyVerticalGrid(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        columns = GridCells.Fixed(2),
+                        userScrollEnabled = true
+                    ) {
+                        items(state.movies) { movie ->
+                            MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+                        }
                     }
                 }
             }
@@ -96,4 +106,3 @@ fun HomeScreen(
         }
     }
 }
-

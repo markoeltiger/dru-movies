@@ -21,17 +21,7 @@ class MovieRepositoryImpl @Inject constructor(
 
         override suspend fun getMovies(): Result<List<Movie>> {
             return try {
-                val metadata = cacheMetadataDao.getCacheMetadata()
-                val currentTime = System.currentTimeMillis()
-
-                val cachedMovies = movieDao.getAllMovies()
-
-                if (metadata != null &&
-                    currentTime - metadata.lastFetchTime < Constants.CACHE_VALIDITY_DURATION &&
-                    cachedMovies.isNotEmpty()) {
-                    Result.success(cachedMovies.map { it.toDomain() })
-                } else {
-
+                    val currentTime = System.currentTimeMillis()
                     val response = api.getPopularMovies(Constants.API_KEY)
                     val entities = response.results.map { it.toEntity(currentTime) }
 
@@ -40,7 +30,7 @@ class MovieRepositoryImpl @Inject constructor(
                     cacheMetadataDao.insertCacheMetadata(CacheMetadata(0, currentTime))
 
                     Result.success(entities.map { it.toDomain() })
-                }
+
             } catch (e: Exception) {
                 val cachedMovies = movieDao.getAllMovies()
                 if (cachedMovies.isNotEmpty()) {
