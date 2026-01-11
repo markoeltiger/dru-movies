@@ -18,6 +18,9 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
     init {
         loadMovies()
     }
@@ -33,6 +36,57 @@ class HomeViewModel @Inject constructor(
                     _uiState.value = HomeUiState.Error(error.message ?: "Unknown error")
                 }
             )
+        }
+    }
+
+    fun refreshMovies() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            repository.refreshMovies().fold(
+                onSuccess = { movies ->
+                    _uiState.value = HomeUiState.Success(movies)
+                },
+                onFailure = { error ->
+                    if (_uiState.value !is HomeUiState.Success) {
+                        _uiState.value = HomeUiState.Error(error.message ?: "Unknown error")
+                    }
+                }
+            )
+            _isRefreshing.value = false
+        }
+    }
+
+    fun loadNextPage() {
+        viewModelScope.launch {
+            if (!repository.hasMorePages()) return@launch
+
+            val currentState = _uiState.value
+            if (currentState is HomeUiState.Success && !currentState.isLoadingMore) {
+                _uiState.value = currentState.copy(isLoadingMore = true)
+
+                repository.getNextPage().fold(
+                    onSuccess = { newMovies ->
+                        val currentMovies = (uiState.value as? HomeUiState.Success)?.movies ?: emptyList()
+                        _uiState.value = HomeUiState.Success(
+                            movies = currentMovies + newMovies,
+                            isLoadingMore = false
+                        )
+                    },
+                    onFailure = { error ->
+                        _uiState.value = currentState.copy(
+                            isLoadingMore = false,
+                            paginationError = error.message
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    fun clearPaginationError() {
+        val currentState = _uiState.value
+        if (currentState is HomeUiState.Success && currentState.paginationError != null) {
+            _uiState.value = currentState.copy(paginationError = null)
         }
     }
 }
