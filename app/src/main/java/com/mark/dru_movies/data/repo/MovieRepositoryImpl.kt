@@ -6,7 +6,7 @@ import com.mark.dru_movies.data.mappers.toEntity
 import com.mark.dru_movies.data.remote.remote.api.TMDbApi
 import com.mark.dru_movies.domain.model.Movie
 import com.mark.dru_movies.domain.repo.MovieRepository
-import com.mark.dru_movies.utils.Constants
+import com.mark.dru_movies.data.utils.Constants
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
