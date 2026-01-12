@@ -24,6 +24,7 @@ Get All popular movies clean architecture project utilizing compose and latest l
 - **Prioritizing Cached Data** use offline data in the room data base first then update it
 - **Background Data Refresh** a seperate work manager to fetch movies every 4 hours 
 - **Coroutines** for async operations
+- **Pagination** Endless Scrolling with page tracking 
 
 
 ## Project Structure
