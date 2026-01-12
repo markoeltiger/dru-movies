@@ -45,3 +45,10 @@ app/
 ├── di/ (Hilt modules)
 └── workers/ (WorkManager)
 ```
+## Screenshots
+
+<div style="display: flex; gap: 10px;">
+  <img src="screenshots/screenshothome.png" width="250" alt="Home Screen"/>
+  <img src="screenshots/screenshotdetails.png" width="250" alt="Details Screen"/>
+  <img src="screenshots/screenshotdatabase.png" width="250" alt="Database"/>
+</div>
